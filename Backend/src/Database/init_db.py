@@ -11,8 +11,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] =  os_config['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-class USERS(db.Model,UserMixin):
-	__tablename__ = 'USERS'
+class USER(db.Model,UserMixin):
+	__tablename__ = 'USER'
 	User_ID = db.Column(db.Integer, primary_key=True)
 	Name = db.Column(db.String(50), nullable=False)
 	Age = db.Column(db.Integer, nullable=False)

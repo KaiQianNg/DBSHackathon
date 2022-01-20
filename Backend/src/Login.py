@@ -11,7 +11,7 @@ loc = os.path.join(os.path.dirname(os.path.realpath(__file__)).split('src')[0],'
 os_config = dotenv_values(loc)
 
 from Session import Session
-from Database.db_model import USERS
+from Database.db_model import USER
 Login = Flask(__name__)
 CORS(Login)
 # Login = Blueprint('Login', __name__)
@@ -32,12 +32,12 @@ def register():
     Phone = request.json["Phone"]
     City = request.json["City"]
     Country = request.json["Country"]
-    user = Session.query(USERS).filter_by(Email=Email).first()
+    user = Session.query(USER).filter_by(Email=Email).first()
     if user:
         return jsonify({"message":f"User already exists."}), 409
     else:
         new_password = generate_password_hash(Password, "sha256")
-        user = USERS(Name = Name, Age = int(Age), Birthday=Birthday, Email=Email,Phone = Phone, Country = Country, Password = new_password)
+        user = USER(Name = Name, Age = int(Age), Birthday=Birthday, Email=Email,Phone = Phone, Country = Country, Password = new_password)
         Session.add(user)
         Session.commit()
         return jsonify({"message":f"User {Name} has been successfully created.", "User_ID":user.User_ID}), 200
@@ -48,7 +48,7 @@ def login():
     if request.method == 'POST':
         username = request.json["Email"]
         password = request.json["Password"]
-        user = Session.query(USERS).filter_by(Email=username).first()
+        user = Session.query(USER).filter_by(Email=username).first()
         if user:
             # Check the hash
             if check_password_hash(user.Password, password):

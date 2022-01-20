@@ -4,3 +4,4 @@ flask-login
 mysql-connector
 mysql-connector-python
 flask_sqlalchemy
+pymysql

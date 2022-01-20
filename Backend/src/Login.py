@@ -3,7 +3,6 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash 
 from datetime import date
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
 from Session import Session
@@ -25,14 +24,23 @@ def register():
     Phone = request.form.get("Phone")
     City = request.form.get("City")
     Country = request.form.get("Country")
-    pass
+    user = session.query(USERS).filter_by(Email=Email).first()
+
+    if user:
+        return {"message":f"User already exists."}, 409
+    else:
+        new_password = generate_password_hash(Password)
+        user = USERS(Name = Name, Age = int(Age), Birthday=Birthday, Email=Email,Phone = Phone, Country = Country, Password = new_password)
+        Session.add(user)
+        Session.commit()
+        return {"message":f"User {Name} has been successfully created."}, 200
 
 
 @Login.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form.get("Email")
-        password = request.form.get("Password")
+        password = request.form.get("Password")s
         user = session.query(USERS).filter_by(Email=username).first()
         if user:
             # Check the hash
@@ -42,7 +50,7 @@ def login():
             else:
                 return {"message":f"Password Error."}, 401
         else:
-            return {"message":"User does not exist.", 404}
+            return {"message":"User does not exist."}, 404
     return {"message": "Please log in"}, 200
 
 

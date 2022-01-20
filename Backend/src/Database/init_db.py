@@ -1,10 +1,13 @@
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import dotenv_values
+loc = os.path.join(os.path.dirname(os.path.realpath(__file__)).split('src')[0],'.env')
+os_config = dotenv_values(loc)
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/TT3'
+app.config['SQLALCHEMY_DATABASE_URI'] =  os_config['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

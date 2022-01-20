@@ -4,31 +4,39 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 import uuid as uuid
+from flask_cors import CORS
 import os
+from dotenv import dotenv_values
+loc = os.path.join(os.path.dirname(os.path.realpath(__file__)).split('src')[0],'.env')
+os_config = dotenv_values(loc)
+
 from Session import Session
 from Database.db_model import USERS
 Login = Flask(__name__)
+CORS(Login)
 # Login = Blueprint('Login', __name__)
 login_manager = LoginManager()
 login_manager.init_app(Login)
 login_manager.login_view = 'login'
-
+Login.config['SECRET_KEY'] = os_config['LOGIN_SECRET_KEY']
+Login.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+Session =Session()
 
 @Login.route('/register', methods =["POST"])
 def register():
-    Email = request.form.get("Email")
-    Password = request.form.get("Password")
-    Name = request.form.get("Name")
-    Age = request.form.get("Age")
-    Birthday = request.form.get("Birthday")
-    Phone = request.form.get("Phone")
-    City = request.form.get("City")
-    Country = request.form.get("Country")
+    Email = request.json["Email"]
+    Password = request.json["Password"]
+    Name = request.json["Name"]
+    Age = request.json["Age"]
+    Birthday = request.json["Birthday"]
+    Phone = request.json["Phone"]
+    City = request.json["City"]
+    Country = request.json["Country"]
     user = Session.query(USERS).filter_by(Email=Email).first()
     if user:
         return jsonify({"message":f"User already exists."}), 409
     else:
-        new_password = generate_password_hash(Password)
+        new_password = generate_password_hash(Password, "sha256")
         user = USERS(Name = Name, Age = int(Age), Birthday=Birthday, Email=Email,Phone = Phone, Country = Country, Password = new_password)
         Session.add(user)
         Session.commit()
@@ -38,8 +46,8 @@ def register():
 @Login.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get("Email")
-        password = request.form.get("Password")
+        username = request.json["Email"]
+        password = request.json["Password"]
         user = Session.query(USERS).filter_by(Email=username).first()
         if user:
             # Check the hash
@@ -49,7 +57,9 @@ def login():
             else:
                 return jsonify({"message":f"Password Error.", "User_ID":user.User_ID}), 401
         else:
-            return jsonify({"message":"User does not exist.", "User_ID":user.User_ID}), 404
+            return jsonify({"message":"User does not exist."}), 404
+        return jsonify({"message":"User does not exist.", "User_ID":username, "password":password}), 404
+
     return jsonify({"message": "Please log in."}), 200
 
 

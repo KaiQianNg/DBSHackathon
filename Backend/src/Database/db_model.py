@@ -8,6 +8,7 @@ class USERS(db.Model,UserMixin):
 	Name = db.Column(db.String(100), nullable=False)
 	Age = db.Column(db.Integer, nullable=False)
 	Birthday = db.Column(db.String(10), nullable=False)
+	Email = db.Column(db.String(100), nullable=False)
 	Phone = db.Column(db.String(50), nullable=False)
 	City = db.Column(db.String(100), nullable=False)
 	Country = db.Column(db.String(100), nullable=False)

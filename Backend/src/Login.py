@@ -40,7 +40,7 @@ def register():
 def login():
     if request.method == 'POST':
         username = request.form.get("Email")
-        password = request.form.get("Password")s
+        password = request.form.get("Password")
         user = session.query(USERS).filter_by(Email=username).first()
         if user:
             # Check the hash

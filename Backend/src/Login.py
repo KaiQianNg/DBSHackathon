@@ -20,8 +20,11 @@ login_manager.init_app(Login)
 login_manager.login_view = 'login'
 Login.config['SECRET_KEY'] = os_config['LOGIN_SECRET_KEY']
 Login.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-Session =Session()
+Session = Session()
 
+@login_manager.user_loader
+def load_user(Email):
+	return Session.query(USER).get(Email)
 @Login.route('/register', methods =["POST"])
 def register():
     Email = request.json["Email"]

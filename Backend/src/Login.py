@@ -57,10 +57,8 @@ def login():
             else:
                 return jsonify({"message":f"Password Error.", "User_ID":user.User_ID}), 401
         else:
-            return jsonify({"message":"User does not exist."}), 404
-        return jsonify({"message":"User does not exist.", "User_ID":username, "password":password}), 404
-
-    return jsonify({"message": "Please log in."}), 200
+            return jsonify({"message":"User does not exist.", "User_ID":"-1"}), 404
+    return jsonify({"message": "Please log in.", "User_ID":"-1"}), 200
 
 
 @Login.route('/dashboard', methods=['GET', 'POST'])

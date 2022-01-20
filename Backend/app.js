@@ -6,7 +6,7 @@ const mysql = require('mysql2');
 
 const app=express();
 dotenv.config();
-app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.json());
 
 const PORT = 3000;
 

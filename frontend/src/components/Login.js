@@ -8,6 +8,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const history = useNavigate();
+    const [userInfo, setUserInfo] = useState();
 
     const onSubmit = e => {
         e.preventDefault();
@@ -18,12 +19,13 @@ const Login = () => {
         };
 
         axios
-        .post('/login', data)
+        .post('http://localhost:5000/login', data)
         .then(res => {
             setEmail('')
             setPassword('')
 
-            history.push('/homepage');
+            setUserInfo(res.data.User_ID)
+            //window.location = "/homepage/" + userInfo
         })
         .catch(err => {
             console.log("Error in Login!");

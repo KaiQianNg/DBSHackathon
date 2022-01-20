@@ -11,7 +11,9 @@ const UserProfile = () => {
 
     useEffect(() => {
         axios
-        .get('http://localhost:3002/')
+        .post('http://localhost:3002/myposts', {
+            userid:'1'
+        })
         .then(res => {
             setPosts(res.data.results)
         })

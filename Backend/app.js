@@ -3,10 +3,12 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const backend = require('./src/index')
 const mysql = require('mysql2');
+const cors = require('cors')
 
 const app=express();
 dotenv.config();
 app.use(bodyParser.json());
+app.use(cors({origin:'*'}))
 
 const PORT = 3002;
 

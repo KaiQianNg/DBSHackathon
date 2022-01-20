@@ -23,13 +23,13 @@ exports.post = async (req, res) => {
 
         var query = `INSERT INTO post (Post_Title, User_ID, Post_Description, Post_image) values ('${title}', '${userid}', '${description}', '${image}')`
         const result = await client.promise().query(query);
-        res.send(result)
+        res.send(result[0].affectedRows==1)
     } catch (err) {
         console.log(err);
     }
 }
 
-exports.mypost = async (req, res) => {
+exports.myposts = async (req, res) => {
     //use req.body.username to filter posts
     const client = global.pool
     console.log(req);

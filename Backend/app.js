@@ -3,10 +3,12 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const backend = require('./src/index')
 const mysql = require('mysql2');
+const cors = require('cors')
 
 const app=express();
 dotenv.config();
 app.use(bodyParser.json());
+app.use(cors({origin:'*'}))
 
 const PORT = 3000;
 
@@ -21,7 +23,7 @@ global.pool = mysql.createPool({
 
 app.get('/', backend.homepage); //[2] all users post
 app.post('/post', backend.post); //[3] insert new post
-app.post('/myposts', backend.mypost) //[4] logged in user post
+app.post('/myposts', backend.myposts) //[4] logged in user post
 app.post('/update', backend.update); //[5] update post
 app.post('/delete', backend.delete); //[6] delete post
 

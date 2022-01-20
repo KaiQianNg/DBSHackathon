@@ -9,10 +9,8 @@ config = {
 
 db = mysql.connector.connect(**config)
 cursor = db.cursor()
-cursor.execute("CREATE DATABASE IF NOT EXISTS USERS")
-cursor.execute("CREATE DATABASE IF NOT EXISTS LIKED_POST")
-cursor.execute("CREATE DATABASE IF NOT EXISTS POST")
-cursor.execute("CREATE DATABASE IF NOT EXISTS POST_COMMENT")
+cursor.execute("CREATE DATABASE IF NOT EXISTS TT3")
 
 cursor.execute("SHOW DATABASES")
 for d in cursor: print("DATA",d)
+

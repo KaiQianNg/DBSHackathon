@@ -7,8 +7,8 @@ import uuid as uuid
 import os
 from Session import Session
 from Database.db_model import USERS
-
-Login = Blueprint('Login', __name__)
+Login = Flask(__name__)
+# Login = Blueprint('Login', __name__)
 login_manager = LoginManager()
 login_manager.init_app(Login)
 login_manager.login_view = 'login'
@@ -26,7 +26,7 @@ def register():
     Country = request.form.get("Country")
     user = Session.query(USERS).filter_by(Email=Email).first()
     if user:
-        return {"message":f"User already exists."}, 409
+        return jsonify({"message":f"User already exists."}), 409
     else:
         new_password = generate_password_hash(Password)
         user = USERS(Name = Name, Age = int(Age), Birthday=Birthday, Email=Email,Phone = Phone, Country = Country, Password = new_password)
@@ -56,7 +56,6 @@ def login():
 @Login.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-	user = current_user.Email
 	return jsonify({"message":f"Hi {current_user.Name}!", "User_ID":current_user.User_ID}), 200
 
 
@@ -66,7 +65,6 @@ def delete_user():
     user = current_user.Email
     Session.delete(current_user)
     Session.commit()
-
     return jsonify({"message":f"User deleted.", "User_ID":user.User_ID}), 200
 
 @Login.route('/logout', methods=['GET', 'POST'])
@@ -75,3 +73,9 @@ def logout():
     current_id = current_user.User_ID 
     logout_user()
     return jsonify({"message":f"Logged out.", "User_ID":current_id}), 200
+
+
+
+
+if __name__ == '__main__':
+    Login.run(debug=True,host='localhost', port=5000)

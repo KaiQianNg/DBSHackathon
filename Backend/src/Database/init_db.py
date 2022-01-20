@@ -1,8 +1,13 @@
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
 
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/TT3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 class USERS(db.Model,UserMixin):
 	__tablename__ = 'USERS'
 	User_ID = db.Column(db.Integer, primary_key=True)
@@ -32,3 +37,5 @@ class POST_COMMENT(db.Model):
 	User_ID  = db.Column(db.Integer, nullable=False)
 	Post_ID  = db.Column(db.Integer, nullable=False)
 	Comment = db.Column(db.String(500), primary_key=True)
+
+db.create_all()

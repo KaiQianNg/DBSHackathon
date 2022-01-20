@@ -10,11 +10,11 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(cors({origin:'*'}))
 
-const PORT = 3000;
+const PORT = 3002;
 
 //change for your own local db
 global.pool = mysql.createPool({
-    host:'localhost',
+    host:'127.0.0.1',
     port: '3306',
     database: 'socialmedia',
     user:process.env.DB_USER,

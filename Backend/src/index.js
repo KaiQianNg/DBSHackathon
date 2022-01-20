@@ -54,6 +54,10 @@ exports.update = async (req, res) => {
         var query = `SELECT * from post WHERE Post_ID=${postid}`
         const result = await client.promise().query(query);
         const retrieved_post = result[0][0]
+        if(!retrieved_post){
+            res.send(false)
+            return;
+        }
 
         var userid = req.body.userid
         var title = req.body.title? req.body.title: retrieved_post.Post_Title
@@ -85,11 +89,19 @@ exports.delete = async (req, res) => {
         var query = `SELECT * from post WHERE Post_ID=${postid}`
         const result = await client.promise().query(query);
         const retrieved_post = result[0][0]
+        if(!retrieved_post){
+            res.send(false)
+            return;
+        }
         
         var check;
         if(userid==retrieved_post.User_ID) {
+            var query = `DELETE FROM liked_post WHERE Post_ID=${postid}`
+            var update = await client.promise().query(query);
+            var query = `DELETE FROM post_comment WHERE Post_ID=${postid}`
+            update = await client.promise().query(query);
             var query = `DELETE FROM post WHERE Post_ID=${postid}`
-            const update = await client.promise().query(query);
+            update = await client.promise().query(query);
             check = update[0].affectedRows==1;
         } else {
             check = false;

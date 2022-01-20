@@ -7,27 +7,25 @@ import MyPostCard from "./MyPostCard";
 
 const UserProfile = () => {
 
-    const [myposts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
         axios
         .get('http://localhost:3002/')
         .then(res => {
-            setPosts(res.data)
+            setPosts(res.data.results)
         })
         .catch(err => {
             console.log(err);
         })
     })
 
-    console.log(myposts)
-
     let postList;
 
-    if(!myposts) {
+    if(!posts) {
         postList = "there is no post record!";
     } else {
-        postList = myposts.map((post, k) =>
+        postList = posts.map((post, k) =>
         <MyPostCard post={post} key={k} />
         );
     }

@@ -1,7 +1,10 @@
 Werkzeug
 flask
 flask-login
+flask-cors
 mysql-connector
 mysql-connector-python
 flask_sqlalchemy
 pymysql
+cryptography
+python-dotenv

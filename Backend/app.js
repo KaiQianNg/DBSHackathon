@@ -3,18 +3,16 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const backend = require('./src/index')
 const mysql = require('mysql2');
-const cors = require('cors')
 
 const app=express();
 dotenv.config();
 app.use(bodyParser.json());
-app.use(cors({origin:'*'}))
 
 const PORT = 3002;
 
 //change for your own local db
 global.pool = mysql.createPool({
-    host:'127.0.0.1',
+    host:'localhost',
     port: '3306',
     database: 'socialmedia',
     user:process.env.DB_USER,

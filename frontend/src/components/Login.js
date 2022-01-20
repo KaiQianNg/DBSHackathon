@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Row, Form, Button, Container} from "react-bootstrap";
 import axios from "axios";
 
@@ -7,9 +7,27 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const history = useNavigate();
 
-    const onSubmit = () => {
+    const onSubmit = e => {
+        e.preventDefault();
 
+        const data = {
+            Email: email,
+            Password: password
+        };
+
+        axios
+        .post('/login', data)
+        .then(res => {
+            setEmail('')
+            setPassword('')
+
+            history.push('/homepage');
+        })
+        .catch(err => {
+            console.log("Error in Login!");
+        })
     }
 
     return(
@@ -17,7 +35,7 @@ const Login = () => {
             <Container>
                 <Row>
                     <h1><b>Login</b></h1>
-                    <Form>
+                    <Form onSubmit={onSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control 
